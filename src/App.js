@@ -6,6 +6,8 @@ import Tuner from './Pages/Tuner';
 import Academia from './Pages/Academia';
 import Login from './Pages/Login';
 import Registro from './Pages/Registro';
+import Curso from './Pages/Curso';
+import Leccion from './Pages/Leccion';
 
 function App() {
   return (
@@ -17,6 +19,9 @@ function App() {
         <Route path="/Academia" element={<Academia />} />
         <Route path="/Login" element={<Login />} />
         <Route path="/Registro" element={<Registro />} />
+        <Route path="/:cursoId" element={<Curso />} />
+        <Route path="/:cursoId/:leccionId" element={<Leccion />} />
+
       </Routes>
     </Router>
   );

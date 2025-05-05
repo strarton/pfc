@@ -19,13 +19,15 @@ const Academia = () => {
       const fetchCourses = async () => {
         try {
           const cursosData = await getCourses();
+          console.log("Cursos sin formato:", cursosData);
+          console.log("Cursos desde API:", JSON.stringify(cursosData, null, 2));
+
           if (cursosData.length > 0) {
             setCursos(cursosData); // Si hay cursos, los mostramos
           } else {
             setError("No tienes cursos asignados.");
           }
         } catch (err) {
-          // Manejo de error si la llamada a la API falla
           setError("Hubo un problema al obtener los cursos.");
         }
       };
@@ -35,8 +37,8 @@ const Academia = () => {
   }, [navigate]);
 
   const handleCourseClick = (courseId) => {
-    // Al hacer clic, navegamos a la página del curso
-    navigate(`/curso/${courseId}`);
+    console.log("Navigating to course with ID:", courseId); // Verifica si el ID se pasa correctamente
+    navigate(`/${courseId}`);
   };
 
   return (
@@ -47,8 +49,8 @@ const Academia = () => {
       <div>
         {cursos.map((curso) => (
           <button
-            key={curso.curso_id}
-            onClick={() => handleCourseClick(curso.curso_id)}
+            key={curso.id}  // Cambié de curso.curso_id a curso.id
+            onClick={() => handleCourseClick(curso.id)} // Cambié de curso.curso_id a curso.id
           >
             {curso.titulo} {/* Mostramos el título de cada curso */}
           </button>
