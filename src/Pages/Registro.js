@@ -1,4 +1,5 @@
 import { useState } from "react";
+import Navbar from "../Components/Navbar";
 import { addUser } from "../Api/addUsers";
 import { Link, useNavigate } from "react-router-dom";
 
@@ -29,6 +30,8 @@ const Registro = () => {
     };
 
     return (
+        <div>
+        <Navbar />
         <form onSubmit={handleSubmit}>
             <h2>Registro</h2>
             <input type="text" name="nombre" placeholder="Nombre" onChange={handleChange} required />
@@ -37,7 +40,9 @@ const Registro = () => {
             <input type="password" name="password" placeholder="Contraseña" onChange={handleChange} required />
             <button type="submit">Registrar</button>
             <Link to="/Login">Login</Link>
+            
         </form>
+        </div>
     );
 };
 

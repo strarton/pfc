@@ -1,56 +1,46 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import getCourses from "../Api/get_courses"; // o puedes hacer getCourseById(cursoId)
+import useCursosProtegidos from "../hooks/useCursosProtegidos";
+import Navbar from "../Components/Navbar";
 
 const Curso = () => {
-  const { cursoId } = useParams();  // Obtenemos el ID del curso desde la URL
-  const navigate = useNavigate();    // Usamos navigate para cambiar de página
-  const [curso, setCurso] = useState(null);
-  const [error, setError] = useState("");
+  const { cursoId } = useParams();  // Obtener el cursoId desde la URL
+  const navigate = useNavigate();  // Para poder redirigir a otra ruta
+  const { cursos, error, loading } = useCursosProtegidos();  // Obtener todos los cursos desde el hook
 
-  useEffect(() => {
-    const fetchCurso = async () => {
-      try {
-        const cursos = await getCourses();
-        const cursoEncontrado = cursos.find((c) => c.id === parseInt(cursoId));  // Buscamos el curso por su ID
-        if (cursoEncontrado) {
-          setCurso(cursoEncontrado);
-        } else {
-          setError("Curso no encontrado.");
-        }
-      } catch (err) {
-        setError("Error al cargar el curso.");
-      }
-    };
+  // Filtramos el curso específico según el ID de la URL
+  const curso = cursos.find((c) => c.id === parseInt(cursoId));
 
-    fetchCurso();
-  }, [cursoId]);
-
-  if (error) return <p>{error}</p>;
-  if (!curso) return <p>Cargando...</p>;
+  if (loading) return <p>Cargando...</p>;  // Esperamos a que termine la carga
+  if (error) return <p>{error}</p>;  // Mostramos cualquier error
+  if (!curso) return <p>Curso no encontrado.</p>;  // Si no se encuentra el curso
 
   const handleLeccionClick = (leccionId) => {
-    // Navegamos a la página de la lección
+    // Redirige a la página de la lección con el cursoId y leccionId
     navigate(`/${cursoId}/${leccionId}`);
   };
 
   return (
     <div>
+        <Navbar />
       <h2>{curso.titulo}</h2>
       <p>{curso.descripcion}</p>
 
+      {/* Verificamos si el curso tiene lecciones */}
       {curso.lecciones && curso.lecciones.length > 0 ? (
-        <ul>
-          {curso.lecciones.map((leccion) => (
-            <li key={leccion.id}>
-              <button onClick={() => handleLeccionClick(leccion.id)}>
-                {leccion.titulo}
-              </button>
-            </li>
-          ))}
-        </ul>
+        <div>
+          <h3>Lecciones:</h3>
+          <ul>
+            {curso.lecciones.map((leccion) => (
+              <li key={leccion.id}>
+                <button onClick={() => handleLeccionClick(leccion.id)}>
+                  {leccion.titulo}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       ) : (
-        <p>Este curso no tiene lecciones.</p>
+        <p>Este curso no tiene lecciones disponibles.</p>
       )}
     </div>
   );

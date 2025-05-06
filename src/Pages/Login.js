@@ -25,28 +25,33 @@ const Login = () => {
 
   return (
     <div>
-      <Navbar />
-      <h2>Iniciar Sesión</h2>
-      <form onSubmit={handleLogin}>
-        <input
-          type="text"
-          placeholder="Ingresa tu email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Ingresa tu contraseña"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
+  <Navbar />
+  <div id="login">
+    <h2 className="login-title">Iniciar Sesión</h2>
+    <form onSubmit={handleLogin}>
+      <input
+        type="text"
+        placeholder="Ingresa tu email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+      />
+      <input
+        type="password"
+        placeholder="Ingresa tu contraseña"
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <div className="button-row">
         <button type="submit">Login</button>
-      </form>
-      {error && <p style={{ color: "red" }}>{error}</p>} 
-      <Link to="/Registro">Registro</Link>
-    </div>
+        <Link to="/Registro" className="register-link">Registro</Link>
+      </div>
+    </form>
+    {error && <p style={{ color: "red" }}>{error}</p>}
+  </div>
+</div>
+
   );
 };
 
